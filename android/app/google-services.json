@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "496456317264",
+    "project_id": "ecom-cda48",
+    "storage_bucket": "ecom-cda48.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496456317264:android:d5cff7290e0773038a9455",
+        "android_client_info": {
+          "package_name": "com.example.gchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs6Down_8jXmp6-nqXRcHELAH_7uzXNRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
