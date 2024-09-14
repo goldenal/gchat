@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gchat/firebase_options.dart';
 import 'package:gchat/viewmodels/auth_view_model.dart';
 import 'package:gchat/viewmodels/bottomNav_model.dart';
+import 'package:gchat/viewmodels/chat_view_model.dart';
 import 'package:gchat/viewmodels/profile_model.dart';
 import 'package:gchat/views/auth/login.dart';
 import 'package:gchat/views/auth/welcome_Screen.dart';
@@ -42,6 +43,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ProfileModel(),
+          //
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ChatViewModel(),
           //
         ),
       ],

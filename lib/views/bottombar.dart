@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gchat/repository/chat_impl.dart';
 import 'package:gchat/viewmodels/bottomNav_model.dart';
 import 'package:gchat/viewmodels/profile_model.dart';
 import 'package:provider/provider.dart';
@@ -10,9 +9,7 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ChatImpl cht = ChatImpl();
-    cht.fetchUsers();
-    context.watch<ProfileModel>().fetchUserName();
+    
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
           elevation: 0,

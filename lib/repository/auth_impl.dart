@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -59,7 +57,7 @@ class AuthImpl implements AuthRepository {
     final ref = FirebaseDatabase.instance.ref();
     final snapshot = await ref.child('users/${_auth.currentUser!.uid}').get();
     final snapshots = await ref.child('users').get();
-    log("${snapshots.value}");
+    // log("${snapshots.value}");
 
     final res = snapshot.value as Map<dynamic, dynamic>;
     localStorage.setItem('name', res['name']);

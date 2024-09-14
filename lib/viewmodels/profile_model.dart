@@ -6,31 +6,41 @@ import 'package:localstorage/localstorage.dart';
 
 class ProfileModel extends ChangeNotifier {
   AuthImpl auth = AuthImpl();
-  bool loading = false;
+  bool loading = true;
   String userName = '';
   final FirebaseAuth authenticate = FirebaseAuth.instance;
 
   fetchUserName() async {
     if (localStorage.getItem('name') != null) {
+      loading = false;
       userName = localStorage.getItem('name')!;
+      notifyListeners();
       userName = await auth.fetchUserName();
+
       localStorage.setItem('name', userName);
+      notifyListeners();
     } else {
       loading = true;
+      notifyListeners();
       userName = await auth.fetchUserName();
       loading = false;
+      localStorage.setItem('name', userName);
+      notifyListeners();
     }
-    localStorage.setItem('name', userName);
   }
 
-  String processInitials() {
-    final words = userName.split(' ');
+  String processInitials(name) {
+    List<String> words = name.split(' ');
 
-    if (words.length == 1) {
-      return userName.substring(0, 2).toUpperCase();
-    } else {
-      return words.map((word) => word[0].toUpperCase()).join('');
+    if (words.length > 1) {
+      // If there are two or more words, return the first character of the first two words
+      return words[0][0] + words[1][0];
+    } else if (words.length == 1 && words[0].isNotEmpty) {
+      // If there's only one word, return the first character twice
+      return words[0][0] + words[0][0];
     }
+
+    return '';
   }
 
   signOut(context) {

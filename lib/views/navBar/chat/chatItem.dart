@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gchat/utils/app_styles.dart';
 import 'package:gchat/utils/responsive_calculation.dart';
+import 'package:gchat/viewmodels/profile_model.dart';
+import 'package:provider/provider.dart';
 
 class ChatItem extends StatelessWidget {
-  const ChatItem({super.key});
+  final String name;
+  const ChatItem({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 375.rw,
       color: Colors.white,
-      margin: EdgeInsets.symmetric(horizontal: 24.w),
+      margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
       padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 14.rw),
       child: Row(
         children: [
@@ -24,7 +27,10 @@ class ChatItem extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                "EO",
+                context
+                    .read<ProfileModel>()
+                    .processInitials(name)
+                    .toUpperCase(),
                 style: myStyle.copyWith(
                     fontSize: 22.rt,
                     fontWeight: FontWeight.w700,
@@ -36,7 +42,7 @@ class ChatItem extends StatelessWidget {
             width: 14.w,
           ),
           Text(
-            "emm@gmail.com",
+            name,
             style: myStyle.copyWith(
                 fontSize: 16.rt,
                 fontWeight: FontWeight.w400,

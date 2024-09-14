@@ -5,8 +5,21 @@ import 'package:gchat/utils/responsive_calculation.dart';
 import 'package:gchat/viewmodels/profile_model.dart';
 import 'package:provider/provider.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      context.read<ProfileModel>().fetchUserName();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +65,8 @@ class Profile extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                context.read<ProfileModel>().processInitials(),
+                                context.read<ProfileModel>().processInitials(
+                                    context.read<ProfileModel>().userName),
                                 style: myStyle.copyWith(
                                     fontSize: 32.rt,
                                     fontWeight: FontWeight.w700,
