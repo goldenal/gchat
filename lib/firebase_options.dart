@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -46,34 +47,33 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBCLO_WcQmWYM0SToUHRQnUs1SltHadH1Q',
+  static FirebaseOptions web = FirebaseOptions(
+    apiKey: '${dotenv.env['firebaseWEB']}',
     appId: '1:496456317264:web:5b9ff62f8a62462a8a9455',
     messagingSenderId: '496456317264',
     projectId: 'ecom-cda48',
     authDomain: 'ecom-cda48.firebaseapp.com',
-    databaseURL: 'https://ecom-cda48-default-rtdb.firebaseio.com',
+    databaseURL: '${dotenv.env['rtdbURL']}',
     storageBucket: 'ecom-cda48.appspot.com',
     measurementId: 'G-E7GRJJPRBZ',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDs6Down_8jXmp6-nqXRcHELAH_7uzXNRM',
+  static FirebaseOptions android = FirebaseOptions(
+    apiKey: '${dotenv.env['firebaseAPIAndroid']}',
     appId: '1:496456317264:android:d5cff7290e0773038a9455',
     messagingSenderId: '496456317264',
     projectId: 'ecom-cda48',
-    databaseURL: 'https://ecom-cda48-default-rtdb.firebaseio.com',
+    databaseURL: '${dotenv.env['rtdbURL']}',
     storageBucket: 'ecom-cda48.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC7OjdCb8Qs_wZm6LYwhvqkxT292IBZhVQ',
+  static FirebaseOptions ios = FirebaseOptions(
+    apiKey: '${dotenv.env['firebaseIOS']}',
     appId: '1:496456317264:ios:88e796d97d70c0128a9455',
     messagingSenderId: '496456317264',
     projectId: 'ecom-cda48',
-    databaseURL: 'https://ecom-cda48-default-rtdb.firebaseio.com',
+    databaseURL: '${dotenv.env['rtdbURL']}',
     storageBucket: 'ecom-cda48.appspot.com',
     iosBundleId: 'com.example.gchat',
   );
-
 }

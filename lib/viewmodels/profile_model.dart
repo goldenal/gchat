@@ -47,7 +47,12 @@ class ProfileModel extends ChangeNotifier {
     authenticate.signOut();
     localStorage.setItem('loggedin', "false");
     localStorage.removeItem('name');
-
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Login(),
+      ),
+      (route) => false,
+    );
   }
 }

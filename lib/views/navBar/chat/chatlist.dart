@@ -20,6 +20,8 @@ class _ChatlistState extends State<Chatlist> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
+      context.read<ChatViewModel>().checkInternetAccess();
+      context.read<ChatViewModel>().fetchChatIDKeys();
       context.read<ChatViewModel>().loadUsers();
     });
   }
@@ -49,37 +51,48 @@ class _ChatlistState extends State<Chatlist> {
                       ),
                     ),
                     SizedBox(
-                      height: 29.h,
+                      height: 3.h,
                     ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: context
-                            .read<ChatViewModel>()
-                            .userdata
-                            .myUser!
-                            .length,
-                        itemBuilder: (context, index) {
-                          ChatViewModel model = context.read<ChatViewModel>();
-                          MyUser myUser = model.userdata.myUser![index];
+                    if (context.watch<ChatViewModel>().loadingKey)
+                      Center(
+                        child: Text("Loading chat details........",
+                            style: myStyle.copyWith(
+                                fontSize: 12.rt, fontWeight: FontWeight.w700)),
+                      ),
+                    SizedBox(
+                      height: 27.h,
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: context
+                              .read<ChatViewModel>()
+                              .userdata
+                              .myUser!
+                              .length,
+                          itemBuilder: (context, index) {
+                            ChatViewModel model = context.read<ChatViewModel>();
+                            MyUser myUser = model.userdata.myUser![index];
 
-                          return GestureDetector(
-                            onTap: ()async {
-                              String id = await model
-                                                .fetchID(myUser.id ?? "");
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
+                            return GestureDetector(
+                              onTap: () async {
+                                String id =
+                                    await model.fetchID(myUser.id ?? "");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
                                       builder: (context) => Chatscreen(
-                                            name: myUser.name ?? "",
-                                            senderId: model.getSenderID() ?? "",
-                                            chatId: id),
-                                          ));
-                            },
-                            child: ChatItem(
-                              name: myUser.name ?? "",
-                            ),
-                          );
-                        })
+                                          name: myUser.name ?? "",
+                                          senderId: model.getSenderID() ?? "",
+                                          chatId: id),
+                                    ));
+                              },
+                              child: ChatItem(
+                                name: myUser.name ?? "",
+                              ),
+                            );
+                          }),
+                    )
                   ],
                 ),
               ),

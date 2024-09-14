@@ -1,1 +1,45 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"ecom-cda48","appId":"1:496456317264:android:d5cff7290e0773038a9455","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"ecom-cda48","appId":"1:496456317264:ios:88e796d97d70c0128a9455","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"ecom-cda48","configurations":{"android":"1:496456317264:android:d5cff7290e0773038a9455","ios":"1:496456317264:ios:88e796d97d70c0128a9455","web":"1:496456317264:web:5b9ff62f8a62462a8a9455"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "ecom-cda48",
+          "appId": "1:496456317264:android:d5cff7290e0773038a9455",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "ecom-cda48",
+          "appId": "1:496456317264:ios:88e796d97d70c0128a9455",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "ecom-cda48",
+          "configurations": {
+            "android": "1:496456317264:android:d5cff7290e0773038a9455",
+            "ios": "1:496456317264:ios:88e796d97d70c0128a9455",
+            "web": "1:496456317264:web:5b9ff62f8a62462a8a9455"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

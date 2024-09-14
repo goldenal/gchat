@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ class ChatViewModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   ChatData chats = ChatData();
   final refInstance = FirebaseDatabase.instance;
+  bool hasInternet = true;
+  bool loadingKey = false;
 
   String? getSenderID() {
     return _auth.currentUser?.uid;
@@ -25,6 +28,23 @@ class ChatViewModel extends ChangeNotifier {
   // getChatID(String otherUserID) async {
   //   return "${_auth.currentUser?.uid}$otherUserID";
   // }
+
+  checkInternetAccess() {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi ||
+          result == ConnectivityResult.vpn) {
+        hasInternet = true;
+        notifyListeners();
+      } else {
+        hasInternet = false;
+        notifyListeners();
+      }
+      // Got a new connectivity status!
+    });
+  }
+
+  cacheChat() {}
 
   loadUsers() async {
     log('<<>>${localStorage.getItem('users')}');
@@ -52,21 +72,43 @@ class ChatViewModel extends ChangeNotifier {
   Future<String> fetchID(String id2) async {
     String id1 = _auth.currentUser?.uid ?? "";
     List<dynamic> filteredItems = [];
+    List<dynamic> chatIds = [];
+
     String selectedChat = "";
 
+    try {
+      if (hasInternet) {
+        chatIds = await fetchChatIDKeys();
+      } else {
+        chatIds = jsonDecode(localStorage.getItem('chatIds') ?? "");
+      }
+
+      filteredItems = chatIds
+          .where((item) => (item.contains(id1) && item.contains(id2)))
+          .toList();
+      if (filteredItems.length == 0) {
+        return id1 + id2;
+      } else {
+        return filteredItems[0];
+      }
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<List> fetchChatIDKeys() async {
+    loadingKey = true;
+    notifyListeners();
     final ref = FirebaseDatabase.instance.ref();
 
     final snapshot = await ref.child('chat').get();
+    log("F");
     final res = snapshot.value as Map<dynamic, dynamic>;
-    List<dynamic> chatIds = res.keys.toList();
-    filteredItems = chatIds
-        .where((item) => (item.contains(id1) && item.contains(id2)))
-        .toList();
-    if (filteredItems.length == 0) {
-      return id1 + id2;
-    } else {
-      return filteredItems[0];
-    }
+    localStorage.setItem('chatIds', jsonEncode(res.keys.toList()));
+    loadingKey = false;
+    notifyListeners();
+    return res.keys.toList();
   }
 
   Future<bool> sendMesssage(String message, String senderID, String chatID,
@@ -79,14 +121,17 @@ class ChatViewModel extends ChangeNotifier {
   }
 
   scrollList(ScrollController scrollController) {
-    Timer(
-        const Duration(milliseconds: 50),
-        () => scrollController.animateTo(
-              scrollController.position.maxScrollExtent,
-              duration: const Duration(milliseconds: 1),
-              curve: Curves.easeInOut,
-            ));
-
-    log("F");
+    try {
+      Timer(
+          const Duration(milliseconds: 50),
+          () => scrollController.animateTo(
+                scrollController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 1),
+                curve: Curves.easeInOut,
+              ));
+      log("scrolled");
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

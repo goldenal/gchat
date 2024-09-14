@@ -105,6 +105,7 @@ class SignUp extends StatelessWidget {
                     SizedBox(
                       width: 375.rw,
                       child: TextFormField(
+                        obscureText: context.watch<AuthViewModel>().isVisible,
                         onChanged: (val) {
                           password = val;
                         },
@@ -115,6 +116,15 @@ class SignUp extends StatelessWidget {
                           return null;
                         },
                         decoration: InputDecoration(
+                            suffixIcon: GestureDetector(
+                                onTap: () {
+                                  context
+                                      .read<AuthViewModel>()
+                                      .changeVisibility();
+                                },
+                                child: context.read<AuthViewModel>().isVisible
+                                    ? const Icon(Icons.visibility_off)
+                                    : const Icon(Icons.visibility)),
                             hintText: "Password",
                             hintStyle: myStyle.copyWith(
                                 fontWeight: FontWeight.w400,

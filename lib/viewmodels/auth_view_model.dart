@@ -8,6 +8,12 @@ import 'package:localstorage/localstorage.dart';
 class AuthViewModel extends ChangeNotifier {
   AuthImpl auth = AuthImpl();
   bool isLoading = false;
+  bool isVisible = true;
+
+  changeVisibility() {
+    isVisible = !isVisible;
+    notifyListeners();
+  }
 
   register(name, password, email, context) async {
     isLoading = true;

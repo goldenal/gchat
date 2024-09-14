@@ -31,11 +31,6 @@ class Login extends StatelessWidget {
                     SizedBox(
                       height: 10.h,
                     ),
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(Icons.arrow_back_ios)),
                     SizedBox(
                       height: 11.h,
                     ),
@@ -74,7 +69,7 @@ class Login extends StatelessWidget {
                             hintText: "Email",
                             hintStyle: myStyle.copyWith(
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff898989))),
+                                color: const Color(0xff898989))),
                       ),
                     ),
                     SizedBox(
@@ -83,6 +78,7 @@ class Login extends StatelessWidget {
                     SizedBox(
                       width: 375.rw,
                       child: TextFormField(
+                        obscureText: context.watch<AuthViewModel>().isVisible,
                         onChanged: (val) {
                           password = val;
                         },
@@ -93,10 +89,19 @@ class Login extends StatelessWidget {
                           return null;
                         },
                         decoration: InputDecoration(
+                            suffixIcon: GestureDetector(
+                                onTap: () {
+                                  context
+                                      .read<AuthViewModel>()
+                                      .changeVisibility();
+                                },
+                                child: context.read<AuthViewModel>().isVisible
+                                    ? const Icon(Icons.visibility_off)
+                                    : const Icon(Icons.visibility)),
                             hintText: "Password",
                             hintStyle: myStyle.copyWith(
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff898989))),
+                                color: const Color(0xff898989))),
                       ),
                     ),
                     SizedBox(
@@ -119,7 +124,7 @@ class Login extends StatelessWidget {
                           ),
                           child: Center(
                             child: context.watch<AuthViewModel>().isLoading
-                                ? CircularProgressIndicator(
+                                ? const CircularProgressIndicator(
                                     color: Colors.white,
                                   )
                                 : Text(
