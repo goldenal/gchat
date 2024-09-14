@@ -59,19 +59,21 @@ class _ChatlistState extends State<Chatlist> {
                             .myUser!
                             .length,
                         itemBuilder: (context, index) {
-                          MyUser myUser = context
-                              .read<ChatViewModel>()
-                              .userdata
-                              .myUser![index];
+                          ChatViewModel model = context.read<ChatViewModel>();
+                          MyUser myUser = model.userdata.myUser![index];
 
                           return GestureDetector(
-                            onTap: () {
+                            onTap: ()async {
+                              String id = await model
+                                                .fetchID(myUser.id ?? "");
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Chatscreen(
                                             name: myUser.name ?? "",
-                                          )));
+                                            senderId: model.getSenderID() ?? "",
+                                            chatId: id),
+                                          ));
                             },
                             child: ChatItem(
                               name: myUser.name ?? "",

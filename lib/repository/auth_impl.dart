@@ -56,7 +56,7 @@ class AuthImpl implements AuthRepository {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final ref = FirebaseDatabase.instance.ref();
     final snapshot = await ref.child('users/${_auth.currentUser!.uid}').get();
-    final snapshots = await ref.child('users').get();
+    
     // log("${snapshots.value}");
 
     final res = snapshot.value as Map<dynamic, dynamic>;

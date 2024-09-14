@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gchat/repository/auth_impl.dart';
 import 'package:gchat/views/bottombar.dart';
@@ -10,18 +12,23 @@ class AuthViewModel extends ChangeNotifier {
   register(name, password, email, context) async {
     isLoading = true;
     notifyListeners();
-    bool res = await auth.register(name, password, email, context);
-    isLoading = false;
-    notifyListeners();
-    if (res) {
-      localStorage.setItem('loggedin', "true");
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const BottomBar(),
-        ),
-        (route) => false,
-      );
+    try {
+      log("F");
+      bool res = await auth.register(name, password, email, context);
+      isLoading = false;
+      notifyListeners();
+      if (res) {
+        localStorage.setItem('loggedin', "true");
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const BottomBar(),
+          ),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      log(e.toString());
     }
   }
 

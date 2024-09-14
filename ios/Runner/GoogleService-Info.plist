@@ -26,5 +26,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:496456317264:ios:88e796d97d70c0128a9455</string>
+	<key>DATABASE_URL</key>
+	<string>https://ecom-cda48-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

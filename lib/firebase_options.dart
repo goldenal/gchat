@@ -52,6 +52,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '496456317264',
     projectId: 'ecom-cda48',
     authDomain: 'ecom-cda48.firebaseapp.com',
+    databaseURL: 'https://ecom-cda48-default-rtdb.firebaseio.com',
     storageBucket: 'ecom-cda48.appspot.com',
     measurementId: 'G-E7GRJJPRBZ',
   );
@@ -61,6 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:496456317264:android:d5cff7290e0773038a9455',
     messagingSenderId: '496456317264',
     projectId: 'ecom-cda48',
+    databaseURL: 'https://ecom-cda48-default-rtdb.firebaseio.com',
     storageBucket: 'ecom-cda48.appspot.com',
   );
 
@@ -69,7 +71,9 @@ class DefaultFirebaseOptions {
     appId: '1:496456317264:ios:88e796d97d70c0128a9455',
     messagingSenderId: '496456317264',
     projectId: 'ecom-cda48',
+    databaseURL: 'https://ecom-cda48-default-rtdb.firebaseio.com',
     storageBucket: 'ecom-cda48.appspot.com',
     iosBundleId: 'com.example.gchat',
   );
+
 }
