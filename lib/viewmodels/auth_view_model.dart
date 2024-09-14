@@ -15,6 +15,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+
   register(name, password, email, context) async {
     isLoading = true;
     notifyListeners();

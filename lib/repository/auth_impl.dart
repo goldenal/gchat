@@ -6,12 +6,7 @@ import 'package:gchat/utils/toastimpl.dart';
 import 'package:localstorage/localstorage.dart';
 
 class AuthImpl implements AuthRepository {
-  @override
-  Future<bool> isLoggedIn() async {
-    // Implement your login logic here
-    return false;
-  }
-
+//login function interacting with firebase auth
   @override
   Future<bool> login(String password, String email, context) async {
     try {
@@ -24,6 +19,7 @@ class AuthImpl implements AuthRepository {
     }
   }
 
+//register function interacting with firebase auth
   @override
   Future<bool> register(
       String name, String password, String email, context) async {
@@ -52,12 +48,11 @@ class AuthImpl implements AuthRepository {
     }
   }
 
+//this fetches the name of the currently logged in user
   Future<String> fetchUserName() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final ref = FirebaseDatabase.instance.ref();
     final snapshot = await ref.child('users/${_auth.currentUser!.uid}').get();
-    
-    // log("${snapshots.value}");
 
     final res = snapshot.value as Map<dynamic, dynamic>;
     localStorage.setItem('name', res['name']);

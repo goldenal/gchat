@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+
+
+//basically an extension for more responsive calculation across web and mobile.
 extension WebCheck on num {
   double get rh {
     return kIsWeb ? this * 1 : cal_height(this);

@@ -2,8 +2,12 @@
 //
 //     final chatData = chatDataFromJson(jsonString);
 
+
+
 import 'dart:convert';
 
+
+//this is the chat data model
 ChatData chatDataFromJson(String str) => ChatData.fromJson(json.decode(str));
 
 String chatDataToJson(ChatData data) => json.encode(data.toJson());

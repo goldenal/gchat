@@ -85,7 +85,7 @@ class _ChatscreenState extends State<Chatscreen> {
                               messagesList.sort((a, b) {
                                 String timeA = a["timestamp"].toString();
                                 String timeB = b["timestamp"].toString();
-                                return timeA.compareTo(timeB);
+                                return timeA.compareTo(timeB);// sort chart according to timestamp
                               });
                               localStorage.setItem(
                                   '${widget.chatId}${widget.senderId}',
@@ -107,6 +107,7 @@ class _ChatscreenState extends State<Chatscreen> {
                                 localStorage.getItem(
                                         '${widget.chatId}${widget.senderId}') !=
                                     null) {
+                                      //returns the chat list from local storage if there is no internet connectivity
                               return ChatList(
                                 messagesList: jsonDecode(localStorage.getItem(
                                         '${widget.chatId}${widget.senderId}') ??

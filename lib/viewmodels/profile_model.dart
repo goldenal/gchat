@@ -10,6 +10,7 @@ class ProfileModel extends ChangeNotifier {
   String userName = '';
   final FirebaseAuth authenticate = FirebaseAuth.instance;
 
+//fetches the logged in user name
   fetchUserName() async {
     if (localStorage.getItem('name') != null) {
       loading = false;
@@ -29,6 +30,7 @@ class ProfileModel extends ChangeNotifier {
     }
   }
 
+//for getting initials from a given name
   String processInitials(name) {
     List<String> words = name.split(' ');
 
@@ -42,6 +44,7 @@ class ProfileModel extends ChangeNotifier {
 
     return '';
   }
+
 
   signOut(context) {
     authenticate.signOut();
