@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -20,13 +21,13 @@ class ChatViewModel extends ChangeNotifier {
   final refInstance = FirebaseDatabase.instance;
   bool hasInternet = true;
   bool loadingKey = false;
+  bool localSender = false;
 
 //returns currently logged in user id
   String? getSenderID() {
     return _auth.currentUser?.uid;
   }
 
-  
 //to check for internet access
   checkInternetAccess() {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
@@ -42,7 +43,6 @@ class ChatViewModel extends ChangeNotifier {
       // Got a new connectivity status!
     });
   }
-
 
 //this is the function fetches all the users on the platform, it supply information to the UI
   loadUsers() async {
@@ -68,7 +68,6 @@ class ChatViewModel extends ChangeNotifier {
     }
   }
 
-
 //this function fetches a particular chat ID
   Future<String> fetchID(String id2) async {
     String id1 = _auth.currentUser?.uid ?? "";
@@ -78,17 +77,14 @@ class ChatViewModel extends ChangeNotifier {
     String selectedChat = "";
 
     try {
-      if (hasInternet) {
-        chatIds = await fetchChatIDKeys();
-      } else {
-        chatIds = jsonDecode(localStorage.getItem('chatIds') ?? "");
-      }
+      chatIds = jsonDecode(localStorage.getItem('chatIds') ?? "");
 
       filteredItems = chatIds
           .where((item) => (item.contains(id1) && item.contains(id2)))
           .toList();
       if (filteredItems.length == 0) {
-        return id1 + id2; //returns default id if no  id was found from the chatlist
+        return id1 +
+            id2; //returns default id if no  id was found from the chatlist
       } else {
         return filteredItems[0];
       }
@@ -113,13 +109,29 @@ class ChatViewModel extends ChangeNotifier {
     return res.keys.toList();
   }
 
+  playSound(String sound) async {
+    try {
+      final player = AudioPlayer();
+      await player.play(AssetSource('sounds/$sound.mp3'));
+    } catch (e) {
+      log(e.toString());
+      // TODO
+    }
+  }
+
 // this function is used for sending messages
   Future<bool> sendMesssage(String message, String senderID, String chatID,
       ScrollController ctrl) async {
+    localSender = true;
     bool res = await cht.sendMessage(
         ChatModel(chatId: chatID, message: message, senderId: senderID));
     scrollList(ctrl);
-    log("message sent");
+    if (res) {
+      await playSound("send");
+
+      log("message sent");
+    }
+
     return res;
   }
 

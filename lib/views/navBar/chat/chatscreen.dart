@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class Chatscreen extends StatefulWidget {
 class _ChatscreenState extends State<Chatscreen> {
   TextEditingController ctr = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  int rebuilds = 0;
   @override
   void initState() {
     super.initState();
@@ -74,18 +76,35 @@ class _ChatscreenState extends State<Chatscreen> {
                             .orderByChild("timestamp")
                             .onValue,
                         builder: (context, snapshot) {
-                          myModel.scrollList(_scrollController);
                           if (snapshot.hasData && snapshot.data != null) {
+                            myModel.scrollList(_scrollController);
+                            // if (rebuilds > 1 && !myModel.localSender)
+                            //myModel.playSound("rec");
+
+                            log(rebuilds.toString());
+                            // log("Ad");
                             DataSnapshot dataSnapshot = snapshot.data!.snapshot;
                             Map<dynamic, dynamic>? messagesData =
                                 dataSnapshot.value as Map?;
                             if (messagesData != null) {
                               List<dynamic> messagesList =
                                   messagesData.values.toList();
+                              // int previousLength = 0;
+                              // int currentlenght = messagesList.length;
+                              // log("currentl$currentlenght");
+                              // if (currentlenght != previousLength &&
+                              //     !myModel.localSender &&
+                              //     rebuilds > 0) {
+                              //   myModel.playSound("rec");
+                              //   previousLength = currentlenght;
+                              // }
+
+                              // rebuilds++;
                               messagesList.sort((a, b) {
                                 String timeA = a["timestamp"].toString();
                                 String timeB = b["timestamp"].toString();
-                                return timeA.compareTo(timeB);// sort chart according to timestamp
+                                return timeA.compareTo(
+                                    timeB); // sort chart according to timestamp
                               });
                               localStorage.setItem(
                                   '${widget.chatId}${widget.senderId}',
@@ -103,11 +122,10 @@ class _ChatscreenState extends State<Chatscreen> {
                             return Center(
                                 child: Text('Error: ${snapshot.error}'));
                           } else {
-                            if (!context.watch<ChatViewModel>().hasInternet &&
-                                localStorage.getItem(
-                                        '${widget.chatId}${widget.senderId}') !=
-                                    null) {
-                                      //returns the chat list from local storage if there is no internet connectivity
+                            if (localStorage.getItem(
+                                    '${widget.chatId}${widget.senderId}') !=
+                                null) {
+                              //returns the chat list from local storage if there is no internet connectivity
                               return ChatList(
                                 messagesList: jsonDecode(localStorage.getItem(
                                         '${widget.chatId}${widget.senderId}') ??
@@ -117,10 +135,7 @@ class _ChatscreenState extends State<Chatscreen> {
                               );
                             } else {
                               return Center(
-                                  child: Text(
-                                      context.watch<ChatViewModel>().hasInternet
-                                          ? 'Fetching message...'
-                                          : 'No internet connection'));
+                                  child: Text('No internet connection'));
                             }
                           }
                         }),
