@@ -2,10 +2,7 @@
 //
 //     final chatData = chatDataFromJson(jsonString);
 
-
-
 import 'dart:convert';
-
 
 //this is the chat data model
 ChatData chatDataFromJson(String str) => ChatData.fromJson(json.decode(str));
@@ -13,41 +10,45 @@ ChatData chatDataFromJson(String str) => ChatData.fromJson(json.decode(str));
 String chatDataToJson(ChatData data) => json.encode(data.toJson());
 
 class ChatData {
-    List<ChatModel>? chatModel;
+  List<ChatModel>? chatModel;
 
-    ChatData({
-        this.chatModel,
-    });
+  ChatData({
+    this.chatModel,
+  });
 
-    factory ChatData.fromJson(Map<String, dynamic> json) => ChatData(
-        chatModel: json["ChatModel"] == null ? [] : List<ChatModel>.from(json["ChatModel"]!.map((x) => ChatModel.fromJson(x))),
-    );
+  factory ChatData.fromJson(Map<String, dynamic> json) => ChatData(
+        chatModel: json["ChatModel"] == null
+            ? []
+            : List<ChatModel>.from(
+                json["ChatModel"]!.map((x) => ChatModel.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
-        "ChatModel": chatModel == null ? [] : List<dynamic>.from(chatModel!.map((x) => x.toJson())),
-    };
+  Map<String, dynamic> toJson() => {
+        "ChatModel": chatModel == null
+            ? []
+            : List<dynamic>.from(chatModel!.map((x) => x.toJson())),
+      };
 }
 
 class ChatModel {
-    String? message;
-    String? chatId;
-    String? senderId;
+  String? message;
+  String? chatId;
+  String? senderId;
+  String? language;
 
-    ChatModel({
-        this.message,
-        this.chatId,
-        this.senderId,
-    });
+  ChatModel({this.message, this.chatId, this.senderId, this.language});
 
-    factory ChatModel.fromJson(Map<String, dynamic> json) => ChatModel(
+  factory ChatModel.fromJson(Map<String, dynamic> json) => ChatModel(
         message: json["message"],
         chatId: json["chatId"],
         senderId: json["senderId"],
-    );
+        language: json["language"],
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "message": message,
         "chatId": chatId,
         "senderId": senderId,
-    };
+        "language": language,
+      };
 }

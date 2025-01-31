@@ -16,12 +16,12 @@ class AuthViewModel extends ChangeNotifier {
   }
 
 
-  register(name, password, email, context) async {
+  register(name, password, email, context,lang) async {
     isLoading = true;
     notifyListeners();
     try {
       log("F");
-      bool res = await auth.register(name, password, email, context);
+      bool res = await auth.register(name, password, email, context,lang);
       isLoading = false;
       notifyListeners();
       if (res) {

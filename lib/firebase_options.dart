@@ -48,12 +48,12 @@ class DefaultFirebaseOptions {
   }
 
   static FirebaseOptions web = FirebaseOptions(
-    apiKey: '${dotenv.env['firebaseWEB']}',
+    apiKey: 'AIzaSyBCLO_WcQmWYM0SToUHRQnUs1SltHadH1Q',
     appId: '1:496456317264:web:5b9ff62f8a62462a8a9455',
     messagingSenderId: '496456317264',
     projectId: 'ecom-cda48',
     authDomain: 'ecom-cda48.firebaseapp.com',
-    databaseURL: '${dotenv.env['rtdbURL']}',
+    databaseURL: 'https://ecom-cda48-default-rtdb.firebaseio.com',
     storageBucket: 'ecom-cda48.appspot.com',
     measurementId: 'G-E7GRJJPRBZ',
   );

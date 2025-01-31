@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class SignUp extends StatelessWidget {
   SignUp({super.key});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? email, password, name;
+  String? email, password, name, lang;
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +105,28 @@ class SignUp extends StatelessWidget {
                     SizedBox(
                       width: 375.rw,
                       child: TextFormField(
+                        onChanged: (val) {
+                          lang = val;
+                        },
+                        validator: (v) {
+                          if (v!.isEmpty) {
+                            return "Field is required";
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                            hintText: "Language",
+                            hintStyle: myStyle.copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff898989))),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 18.h,
+                    ),
+                    SizedBox(
+                      width: 375.rw,
+                      child: TextFormField(
                         obscureText: context.watch<AuthViewModel>().isVisible,
                         onChanged: (val) {
                           password = val;
@@ -139,7 +161,7 @@ class SignUp extends StatelessWidget {
                         if (_formKey.currentState!.validate()) {
                           context
                               .read<AuthViewModel>()
-                              .register(name, password, email, context);
+                              .register(name, password, email, context, lang);
                         }
                       },
                       child: Container(

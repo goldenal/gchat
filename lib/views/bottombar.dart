@@ -12,7 +12,8 @@ class BottomBar extends StatelessWidget {
     return SizedBox(
       height: 812.rh,
       width: 374.rw,
-      child: Scaffold(
+      child:
+       Scaffold(
         bottomNavigationBar: BottomNavigationBar(
             elevation: 0,
             onTap: (val) {

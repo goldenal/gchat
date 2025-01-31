@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gchat/models/chat/users.dart';
+import 'package:gchat/service/gemini.dart';
 import 'package:gchat/utils/app_styles.dart';
 import 'package:gchat/utils/responsive_calculation.dart';
 import 'package:gchat/viewmodels/chat_view_model.dart';
 import 'package:gchat/views/navBar/chat/chatItem.dart';
 import 'package:gchat/views/navBar/chat/chatscreen.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class Chatlist extends StatefulWidget {
@@ -16,6 +20,7 @@ class Chatlist extends StatefulWidget {
 }
 
 class _ChatlistState extends State<Chatlist> {
+  final gemCtrl = Get.put(GemController());
   @override
   void initState() {
     super.initState();
@@ -24,6 +29,7 @@ class _ChatlistState extends State<Chatlist> {
       context.read<ChatViewModel>().fetchChatIDKeys();
       context.read<ChatViewModel>().loadUsers();
     });
+    gemCtrl.initApi();
   }
 
   @override
@@ -72,7 +78,11 @@ class _ChatlistState extends State<Chatlist> {
                               .length,
                           itemBuilder: (context, index) {
                             ChatViewModel model = context.read<ChatViewModel>();
-                            MyUser myUser = model.userdata.myUser![index];
+                            MyUser myUser = context
+                                .read<ChatViewModel>()
+                                .userdata
+                                .myUser![index];
+                            log("att${context.read<ChatViewModel>().userdata.myUser!.length}");
 
                             return GestureDetector(
                               onTap: () async {
@@ -82,9 +92,11 @@ class _ChatlistState extends State<Chatlist> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => Chatscreen(
-                                          name: myUser.name ?? "",
-                                          senderId: model.getSenderID() ?? "",
-                                          chatId: id),
+                                        name: myUser.name ?? "",
+                                        senderId: model.getSenderID() ?? "",
+                                        chatId: id,
+                                        localUserLang: myUser.language ?? "",
+                                      ),
                                     ));
                               },
                               child: ChatItem(

@@ -22,7 +22,7 @@ class AuthImpl implements AuthRepository {
 //register function interacting with firebase auth
   @override
   Future<bool> register(
-      String name, String password, String email, context) async {
+      String name, String password, String email, context,String lang) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     try {
@@ -37,6 +37,7 @@ class AuthImpl implements AuthRepository {
       await ref.set({
         "name": name,
         "id": id,
+        "language": lang
       });
 
       return true;

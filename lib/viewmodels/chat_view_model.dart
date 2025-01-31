@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:gchat/models/chat/chatData.dart';
 import 'package:gchat/models/chat/users.dart';
 import 'package:gchat/repository/chat_impl.dart';
+import 'package:gchat/service/gemini.dart';
+import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
 
 class ChatViewModel extends ChangeNotifier {
@@ -22,7 +24,7 @@ class ChatViewModel extends ChangeNotifier {
   bool hasInternet = true;
   bool loadingKey = false;
   bool localSender = false;
-
+  final gemCtrl = Get.put(GemController());
 //returns currently logged in user id
   String? getSenderID() {
     return _auth.currentUser?.uid;
@@ -122,6 +124,7 @@ class ChatViewModel extends ChangeNotifier {
 // this function is used for sending messages
   Future<bool> sendMesssage(String message, String senderID, String chatID,
       ScrollController ctrl) async {
+    gemCtrl.translate(message, "yoruba");
     localSender = true;
     bool res = await cht.sendMessage(
         ChatModel(chatId: chatID, message: message, senderId: senderID));

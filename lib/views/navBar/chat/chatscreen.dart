@@ -5,22 +5,25 @@ import 'dart:developer';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gchat/service/gemini.dart';
 import 'package:gchat/utils/app_styles.dart';
 import 'package:gchat/utils/responsive_calculation.dart';
 import 'package:gchat/viewmodels/chat_view_model.dart';
 import 'package:gchat/views/navBar/chat/chatItem.dart';
 import 'package:gchat/views/navBar/chat/chatbubble.dart';
+import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 
 class Chatscreen extends StatefulWidget {
-  final String name, chatId, senderId;
+  final String name, chatId, senderId, localUserLang;
 
   const Chatscreen(
       {super.key,
       required this.name,
       required this.senderId,
-      required this.chatId});
+      required this.chatId,
+      required this.localUserLang});
 
   @override
   State<Chatscreen> createState() => _ChatscreenState();
@@ -113,6 +116,7 @@ class _ChatscreenState extends State<Chatscreen> {
                                 messagesList: messagesList,
                                 scrollController: _scrollController,
                                 senderID: myModel.getSenderID() ?? "",
+                                lang: widget.localUserLang,
                               );
                             } else {
                               return const Center(
@@ -132,9 +136,10 @@ class _ChatscreenState extends State<Chatscreen> {
                                     ""),
                                 scrollController: _scrollController,
                                 senderID: myModel.getSenderID() ?? "",
+                                lang: widget.localUserLang,
                               );
                             } else {
-                              return Center(
+                              return const Center(
                                   child: Text('No internet connection'));
                             }
                           }
@@ -217,14 +222,17 @@ class ChatList extends StatelessWidget {
   String senderID; //   ,
   List<dynamic> messagesList;
   ScrollController scrollController;
+  String lang;
   ChatList(
       {super.key,
       required this.messagesList,
       required this.senderID,
-      required this.scrollController});
+      required this.scrollController,
+      required this.lang});
 
   @override
   Widget build(BuildContext context) {
+    final gemCtrl = Get.put(GemController());
     return ListView.builder(
         controller: scrollController,
         // padding: EdgeInsets.only(
@@ -235,11 +243,31 @@ class ChatList extends StatelessWidget {
         shrinkWrap: true,
         itemCount: messagesList.length,
         itemBuilder: (context, index) {
-          return Chatbubble(
-            isSender: messagesList[index]["senderId"] == senderID,
-            msg: messagesList[index]["message"],
-          );
+          if (messagesList[index]["senderId"] == senderID) {
+            return Chatbubble(
+              isSender: messagesList[index]["senderId"] == senderID,
+              msg: messagesList[index]["message"],
+            );
+          } else {
+            return FutureBuilder(
+              future: gemCtrl.translate(messagesList[index]["message"], lang),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Chatbubble(
+                    isSender: messagesList[index]["senderId"] == senderID,
+                    msg: messagesList[index]["message"],
+                  );
+                } else {
+                  return const Center(
+                    child: SizedBox(
+                        height: 10,
+                        width: 10,
+                        child: CircularProgressIndicator()),
+                  );
+                }
+              },
+            );
+          }
         });
-    ;
   }
 }

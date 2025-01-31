@@ -167,6 +167,11 @@ class Login extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Text(" V2",
+                        style: GoogleFonts.roboto(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey))
                   ],
                 ),
               ),

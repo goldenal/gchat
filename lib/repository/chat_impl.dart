@@ -7,8 +7,7 @@ import 'package:gchat/models/chat/users.dart';
 import 'package:gchat/repository/chat_repository.dart';
 
 class ChatImpl implements ChatRepository {
-
-  //this function returns all the users on the platform 
+  //this function returns all the users on the platform
   @override
   Future<Userdata> fetchUsers() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,8 +19,12 @@ class ChatImpl implements ChatRepository {
       Map<dynamic, dynamic> values = snapshots.value as Map<dynamic, dynamic>;
       values.forEach((key, values) {
         log("<<${values}");
-        if (_auth.currentUser!.uid != values["id"]) {//an important check here to prevent  the logged in user from sending a message to their self
-          users.add(MyUser(id: values["id"], name: values["name"]));
+        if (_auth.currentUser!.uid != values["id"]) {
+          //an important check here to prevent  the logged in user from sending a message to their self
+          users.add(MyUser(
+              id: values["id"],
+              name: values["name"],
+              language: values["language"]));
         }
       });
 
