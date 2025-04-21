@@ -87,7 +87,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                          text: " Login",
+                          text: " Login(v1)",
                           style: GoogleFonts.roboto(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
